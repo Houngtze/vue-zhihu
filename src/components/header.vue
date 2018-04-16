@@ -5,10 +5,10 @@
         </mu-appbar> -->
         <div class="title-box" :style="header_obj">
             <mu-icon value="menu" :size="28" color="white" class="menu-btn" @click="toggle"/>
-            <span class="title">今日热闻</span>
+            <span class="title">今日份の消息</span>
         </div>
         <div id="swiper-box">
-            <swiper :options="swiperOption" v-if="swiper_mes" id="swiper" ref="mySwiper">
+            <swiper :options="swiperOption" v-if="swiper_mes" id="swiper" >
                 <swiper-slide id="swiper-item" v-for="item in swiper_mes" :key="item.id">
                     <img :src="item.image" alt="">
                     <span class="swiper-title">{{item.title}}</span>
@@ -57,7 +57,8 @@ export default {
             scroll:0,
             swiper_mes:[],
             header_obj:{
-                backgroundColor:'rgba(0,0,0,0)'
+                backgroundColor:'rgba(0,0,0,0)',
+                display:'block'
             },
             h_show:false,
             open:false,
@@ -90,13 +91,18 @@ export default {
     },
     methods:{
         watchScroll(){
-            let value,header_str
-            this.scroll=document.body.scrollTop
-            value=this.scroll/800
-            if(value>=1){
-                return
+            let value,header_str,swiperHeight
+            this.scroll=document.documentElement.scrollTop
+            swiperHeight = document.getElementById("swiper").offsetHeight
+            console.log(swiperHeight)
+            value = this.scroll
+            
+            if(value>=swiperHeight){
+                this.header_obj.display='none'
+            }else {
+                this.header_obj.display='block'
             }
-            this.header_obj.backgroundColor='rgba(0,0,0,'+value+')'
+            
         },
         getTopStories(e){
             let top_stories_id=this.swiper_mes[e.activeIndex].id
