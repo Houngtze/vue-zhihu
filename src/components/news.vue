@@ -1,5 +1,6 @@
 <template>
     <div id="news" v-show="n_show">
+        <loading :loadingShow="l_show"></loading>
         <div id="news-items" @click="getNewsContent(item.id)" v-for="(item,index) in news">
             <div class="content-text">{{item.title}}</div>
             <div class="content-img"><img :src="item.images[0]" alt=""></div>
@@ -26,6 +27,7 @@
 
 
 <script>
+import loading from '../components/loading'
 import {getMaxDays} from '../func.js'
 import router from '../router'
 import {fetchLastestNews,fetchBeforeNews} from '../api'
@@ -38,10 +40,13 @@ export default {
                 before_news: [],
                 load_str:'',
                 load_month:0,
-                n_show:false
+                n_show:false,
+                l_show:true
             }
         },
-
+        components: {
+            loading
+        },
         created() {
             let date = new Date()
             let year, month, day, str, str_2
@@ -99,6 +104,7 @@ export default {
             fetchBeforeNews(str_2).then((res) => {
                 this.before_news = res.data.stories
                 this.n_show=true
+                this.l_show=false
             })
         },
         computed: {

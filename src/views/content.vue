@@ -1,5 +1,6 @@
 <template>
     <div id="content" v-show="c_waiting" class="animated fadeIn">
+        <loading :loadingShow="l_show"></loading>
         <div class="content_head" v-show="content_data.image">
             <span class="content_title">{{content_data.title}}</span>
             <span class="content_img_source">图片:&nbsp;&nbsp;{{content_data.image_source}}</span>
@@ -23,6 +24,7 @@
 
 <script>
 import router from '../router'
+import loading from '../components/loading'
 import {fetchNewsContent,fetchStoryExtra} from '../api'
 export default{
 
@@ -35,8 +37,12 @@ export default{
             shortComments:[],
             _id:Number,
             dataBody:'',
-            fromPath:''
+            fromPath:'',
+            l_show: true
         }
+    },
+    components: {
+        loading
     },
     activated(){
         this.c_waiting=false
@@ -56,6 +62,7 @@ export default{
         fetchStoryExtra(id).then((res) => {
             this.extra=res.data
             this.c_waiting=true
+            this.l_show=false
         })
     },
     methods:{

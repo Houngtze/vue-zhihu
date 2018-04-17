@@ -9,7 +9,6 @@
 <script>
 import header from '../components/header'
 import news from '../components/news'
-
 export default {
     components: {
         'v-header': header,
